@@ -2,29 +2,39 @@ import os
 import math
 
 sport_folder = 'bbc-news/sport'
+
+# List and sort files
+sorted_files = sorted(
+    [file for file in os.listdir(sport_folder) if file.endswith('.txt')],
+    key=lambda x: int(os.path.splitext(x)[0])  # Extract numeric part before '.txt'
+)
+
 # list to hold the text content of each file
 sport_texts = []
 
 # read each file from sport folder
-for filename in os.listdir(sport_folder):
+for filename in sorted_files:
     file_path = os.path.join(sport_folder, filename)
     with open(file_path, 'r', encoding='utf-8') as file:
-        sport_texts.append(file.read())
+        sport_texts.append((filename, file.read()))
 
 # print first 1000 characters of the first text to check
-print(f"--- First 1000 characters of the first text ---\n\n {sport_texts[0][:1000]} \n\n---")
+print(f"--- First 1000 characters of the first text ---\n\n {sport_texts[0][:2000]} \n\n---")
 
-# function to preprocess and split text into words
-def preprocess(text):
+# function to tokenize and split text into words
+def tokenize(text):
     words = text.lower().split()
     # remove common punctuations
     words = [word.strip('.,!?()[]{}":;') for word in words]
+    # remove stop words
+    stop_words = ["and", "the", "is", "in", "to"]
+    words = [word for word in words if word not in stop_words]
     return words
 
 # create a vocabulary
 vocabulary = set()
-for text in sport_texts:
-    words = preprocess(text)
+for filename, text in sport_texts:
+    words = tokenize(text)
     vocabulary.update(words)
 
 # convert vocabulary to a sorted list
@@ -41,7 +51,7 @@ def create_bow(text):
     # initialize a zero vector for BoW model
     bow_vector = [0] * len(vocabulary)
 
-    words = preprocess(text)
+    words = tokenize(text)
 
     # update BoW vector with word counts
     for word in words:
@@ -51,7 +61,7 @@ def create_bow(text):
 
     return bow_vector
 
-bow_vectors = [create_bow(text) for text in sport_texts]
+bow_vectors = [create_bow(text) for filename, text in sport_texts]
 
 # function to calculate Euclidean distance between 2 vectors
 def euclidean_distance(vec1, vec2):
