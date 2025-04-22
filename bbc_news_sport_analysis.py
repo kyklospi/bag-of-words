@@ -24,8 +24,10 @@ print(f"--- First 1000 characters of the first text ---\n\n {sport_texts[0][:200
 # function to tokenize and split text into words
 def tokenize(text):
     words = text.lower().split()
+
     # remove common punctuations
     words = [word.strip('.,!?()[]{}":;') for word in words]
+
     # remove stop words
     stop_words = ["and", "the", "is", "in", "to"]
     words = [word for word in words if word not in stop_words]
@@ -68,13 +70,13 @@ def euclidean_distance(vec1, vec2):
     return math.sqrt(sum((x-y) ** 2 for x, y in zip(vec1, vec2)))
 
 # get the BoW vector for the text "497.txt"
-target_text_idx = 497-1     # index starting with 0
+target_text_idx = 497-1  # index starting with 0
 target_bow = bow_vectors[target_text_idx]
 
 # calculate the Euclidean distance of each text to "497.txt"
 distances = []
 for idx, bow_vector in enumerate(bow_vectors):
-    if idx != target_text_idx:      # exclude the target text itself
+    if idx != target_text_idx:  # exclude the target text itself
         dist = euclidean_distance(target_bow, bow_vector)
         distances.append((idx, dist))
 
