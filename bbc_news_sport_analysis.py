@@ -17,9 +17,10 @@ for filename in sorted_files:
     file_path = os.path.join(sport_folder, filename)
     with open(file_path, 'r', encoding='utf-8') as file:
         sport_texts.append((filename, file.read()))
+        file.close()
 
-# print first 1000 characters of the first text to check
-print(f"--- First 1000 characters of the first text ---\n\n {sport_texts[0][:2000]} \n\n---")
+# print first 2000 characters of the first text to check
+print(f"--- First 2000 characters of the first text ---\n\n {sport_texts[0][:2000]} \n\n---")
 
 # function to tokenize and split text into words
 def tokenize(text):
@@ -91,6 +92,6 @@ for idx, dist in closest_texts:
 print("\n--- Closest texts ---\n")
 for idx, _ in closest_texts:
     print(f"\nText Index: {idx + 1} \n")
-    # print the first 1000 characters of the closest texts
-    print(sport_texts[idx][:1000])
+    # print the first 2000 characters of the closest texts
+    print(sport_texts[idx][:2000])
     print("\n---\n")
