@@ -29,6 +29,8 @@ def remove_punctuation(word):
 def tokenize(text):
     words = text.lower().split()
     words = [remove_punctuation(word) for word in words]
+    # return words
+    # comment below for BoW without filtering out stop words
     return [word for word in words if word and word not in STOP_WORDS]
 
 # Create a sorted vocabulary from a list of tokenized texts
